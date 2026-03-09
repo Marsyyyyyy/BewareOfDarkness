@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
-#include "Player.h"
+#include "Player.hpp"
+#include "Game.hpp"
 
 int main()
 {
@@ -15,6 +16,11 @@ int main()
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
+
+        Game game;
+        game.run();
+
+        return 0;
 
         window.clear();
         window.draw(shape);
