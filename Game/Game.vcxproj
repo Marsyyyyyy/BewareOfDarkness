@@ -79,7 +79,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Colors.hpp" />
+    <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Input.hpp" />
+    <ClInclude Include="LightSystem.hpp" />
+    <ClInclude Include="Menu.hpp" />
+    <ClInclude Include="Options.hpp" />
+    <ClInclude Include="Physics.hpp" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="Sound_Indicator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
