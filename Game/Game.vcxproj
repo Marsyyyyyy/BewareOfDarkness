@@ -102,7 +102,6 @@
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -130,8 +129,6 @@
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Sound_Indicator.hpp" />
   </ItemGroup>
-=======
->>>>>>> b4493e79d1c2bceff37d61713e9f0c251740b293
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
