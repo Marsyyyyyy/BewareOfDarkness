@@ -1,8 +1,8 @@
-<<<<<<< HEAD
-#include "Player.h"
+#include "Player.hpp"
 #include <SFML/Graphics.hpp>
 #include "Settings.hpp"
 #include "Menu.hpp"
+#include "Game.hpp"
 #include "Options.hpp"
 #include "Sound_Indicator.hpp"
 #include <iostream>
@@ -10,12 +10,7 @@
 #include <memory>
 
 enum class GameState { MainMenu, Options, Playing };
-=======
-#include <SFML/Graphics.hpp>
 
-#include "Player.hpp"
-#include "Game.hpp"
->>>>>>> b4493e79d1c2bceff37d61713e9f0c251740b293
 
 int main()
 {
@@ -151,7 +146,6 @@ int main()
             }
         }
 
-<<<<<<< HEAD
         // -- Update --
         switch (state)
         {
@@ -169,13 +163,6 @@ int main()
         }
 
         // -- Draw --
-=======
-        Game game;
-        game.run();
-
-        return 0;
-
->>>>>>> b4493e79d1c2bceff37d61713e9f0c251740b293
         window.clear();
 
         switch (state)

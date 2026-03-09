@@ -57,13 +57,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
     <ClCompile Include="Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,7 +74,6 @@
     <ClInclude Include="Physics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
     <ClInclude Include="Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -110,6 +105,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Colors.hpp">
+		<Filter>Header Files</Filter>
+	</ClInclude>
     <ClInclude Include="Platform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

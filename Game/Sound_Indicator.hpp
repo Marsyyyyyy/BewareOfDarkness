@@ -1,12 +1,4 @@
 #pragma once
-// ============================================================
-//  SoundIndicator.hpp  -  Indicateurs visuels pour malentendants
-//  Affiche des fleches / icones directionnelles quand un son
-//  se produit, comme le mode "Visualiser les effets sonores"
-//  de Fortnite.
-//  SFML 3.0.2  |  C++20
-// ============================================================
-
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
