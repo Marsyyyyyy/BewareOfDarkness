@@ -3,6 +3,7 @@
 
 Game::Game(sf::RenderWindow& window) :
     window(window),
+    scene(window.getSize()),
     camera(window.getSize())
 {
     camera.setLevelBounds(sf::FloatRect({ 0.f, 0.f }, { 4000.f, 2000.f }));

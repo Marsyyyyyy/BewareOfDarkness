@@ -87,6 +87,7 @@
     <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="ParallaxBackground.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="LightSystem.hpp" />
     <ClInclude Include="Menu.hpp" />
     <ClInclude Include="Options.hpp" />
+    <ClInclude Include="ParallaxBackground.hpp" />
     <ClInclude Include="Physics.hpp" />
     <ClInclude Include="Platform.hpp" />
     <ClInclude Include="Player.hpp" />

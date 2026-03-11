@@ -33,14 +33,37 @@ void Player::update(float dt, std::vector<Platform>& platforms)
     }
 
     velocity.y += Constants::GRAVITY * dt;
-    sprite.move(velocity * dt);
 
+    // Déplacer X puis Y séparément pour résolution correcte
+    sprite.move({ velocity.x * dt, 0.f });
     for (auto& p : platforms)
     {
-        if (sprite.getGlobalBounds().findIntersection(p.getBounds()))
+        auto intersection = sprite.getGlobalBounds().findIntersection(p.getBounds());
+        if (intersection)
         {
-            velocity.y = 0;
-            isGrounded = true;
+            if (velocity.x > 0) sprite.move({ -intersection->size.x, 0.f });
+            if (velocity.x < 0) sprite.move({ intersection->size.x, 0.f });
+        }
+    }
+
+    sprite.move({ 0.f, velocity.y * dt });
+    isGrounded = false;
+    for (auto& p : platforms)
+    {
+        auto intersection = sprite.getGlobalBounds().findIntersection(p.getBounds());
+        if (intersection)
+        {
+            if (velocity.y > 0)
+            {
+                sprite.move({ 0.f, -intersection->size.y });
+                velocity.y = 0;
+                isGrounded = true;
+            }
+            else if (velocity.y < 0)
+            {
+                sprite.move({ 0.f, intersection->size.y });
+                velocity.y = 0;
+            }
         }
     }
 }

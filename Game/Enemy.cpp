@@ -1,18 +1,16 @@
 #include "Enemy.hpp"
+#include "ResourceManager.hpp"
 #include <cmath>
 
-Enemy::Enemy()
+Enemy::Enemy() : sprite(ResourceManager::getInstance().loadTexture("enemy", "assets/Enemy.png"))
 {
-    body.setSize({ 50,50 });
-    body.setFillColor(sf::Color::Red);
-    body.setPosition({ 800,600 });
-
     state = EnemyState::Idle;
+    sprite.setPosition({ 800.f, 600.f });
 }
 
 void Enemy::update(float dt, sf::Vector2f playerPos)
 {
-    float dist = std::abs(playerPos.x - body.getPosition().x);
+    float dist = std::abs(playerPos.x - sprite.getPosition().x);
 
     if (dist < 300)
         state = EnemyState::Chase;
@@ -21,7 +19,7 @@ void Enemy::update(float dt, sf::Vector2f playerPos)
 
     if (state == EnemyState::Chase)
     {
-        if (playerPos.x < body.getPosition().x)
+        if (playerPos.x < sprite.getPosition().x)
             velocity.x = -100;
         else
             velocity.x = 100;
@@ -31,10 +29,10 @@ void Enemy::update(float dt, sf::Vector2f playerPos)
         velocity.x = 0;
     }
 
-    body.move(velocity * dt);
+    sprite.move(velocity * dt);
 }
 
 void Enemy::render(sf::RenderWindow& window)
 {
-    window.draw(body);
+    window.draw(sprite);
 }
