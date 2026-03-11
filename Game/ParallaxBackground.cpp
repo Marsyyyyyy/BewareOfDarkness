@@ -10,7 +10,7 @@ ParallaxBackground::ParallaxBackground(sf::Vector2u winSize) : windowSize(winSiz
     layers.reserve(3);
     layers.emplace_back(rm.loadTexture("bg1", "assets/background_1.png"), 0.05f, w, h);
     layers.emplace_back(rm.loadTexture("bg2", "assets/background_2.png"), 0.15f, w, h);
-    layers.emplace_back(rm.loadTexture("bg3", "assets/background_3.png"), 0.30f, w, h);
+    layers.emplace_back(rm.loadTexture("bg3", "assets/Arnaud.png"), 0.30f, w, h);
 }
 
 void ParallaxBackground::update(float playerVelX, float dt)
