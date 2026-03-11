@@ -4,7 +4,6 @@
 #include "Menu.hpp"
 #include "Game.hpp"
 #include "Options.hpp"
-#include "Sound_Indicator.hpp"
 #include <iostream>
 #include <filesystem>
 #include <memory>
@@ -41,9 +40,6 @@ int main()
     NeonMenu     mainMenu(window.getSize(), font);
     auto         optionsMenu = std::make_unique<OptionsMenu>(
         window.getSize(), font, settings);
-
-    // -- Sound Indicator (mode malentendant) --
-    SoundIndicator soundIndicator(window.getSize(), font);
 
     GameState state = GameState::MainMenu;
     sf::Clock clock;
@@ -125,21 +121,6 @@ int main()
                 {
                     if (key->code == sf::Keyboard::Key::Escape)
                         state = GameState::MainMenu;
-
-                    // Touches de test pour le mode malentendant
-                    // (a remplacer par ta vraie logique de jeu)
-                    if (key->code == sf::Keyboard::Key::Num1)
-                        soundIndicator.trigger(SoundDirection::Above,
-                            SoundType::MonsterReal, 1.2f);
-                    if (key->code == sf::Keyboard::Key::Num2)
-                        soundIndicator.trigger(SoundDirection::Behind,
-                            SoundType::MonsterBait, 0.8f);
-                    if (key->code == sf::Keyboard::Key::Num3)
-                        soundIndicator.trigger(SoundDirection::Left,
-                            SoundType::Danger, 1.5f);
-                    if (key->code == sf::Keyboard::Key::Num4)
-                        soundIndicator.trigger(SoundDirection::Right,
-                            SoundType::Ambient, 0.6f);
                     break;
                 }
                 }
@@ -156,9 +137,6 @@ int main()
             optionsMenu->update(dt);
             break;
         case GameState::Playing:
-            // Update le sound indicator seulement si mode active
-            if (settings.hearingMode)
-                soundIndicator.update(dt);
             break;
         }
 
@@ -187,17 +165,6 @@ int main()
             info.setFillColor(sf::Color(100, 100, 120));
             info.setPosition({ 20.f, 20.f });
             window.draw(info);
-
-            // Mode malentendant : texte + indicateurs
-            if (settings.hearingMode)
-            {
-                sf::Text hmode(font, "HEARING MODE ON  -  1/2/3/4 to test sounds", 16u);
-                hmode.setFillColor(sf::Color(0, 255, 128, 180));
-                hmode.setPosition({ 20.f, 50.f });
-                window.draw(hmode);
-
-                soundIndicator.draw(window);
-            }
             break;
         }
         }

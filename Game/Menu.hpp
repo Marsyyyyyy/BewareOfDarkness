@@ -1,9 +1,4 @@
 #pragma once
-// ============================================================
-//  Menu.hpp  -  Menu principal neon (Limbo x Neon)
-//  SFML 3.0.2  |  C++20  |  Keyboard only
-// ============================================================
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
