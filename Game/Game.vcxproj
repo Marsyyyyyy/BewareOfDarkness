@@ -86,6 +86,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LightSystem.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Physics.hpp" />
     <ClInclude Include="Platform.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Victory.hpp" />

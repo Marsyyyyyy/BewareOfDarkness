@@ -15,7 +15,7 @@ enum class GameState { MainMenu, Options, Playing, GameOver, Victory };
 int main()
 {
     sf::RenderWindow window(
-        sf::VideoMode({ 1280u, 720u }),
+        sf::VideoMode({ 1920u, 1080u }),
         "Beware Of Darkness",
         sf::Style::Close | sf::Style::Titlebar);
     window.setFramerateLimit(60);
@@ -34,21 +34,23 @@ int main()
     }
 
     GameSettings settings;
-    NeonMenu mainMenu(window.getSize(), font);
-    auto optionsMenu = std::make_unique<OptionsMenu>(
-        window.getSize(), font, settings);
-    auto gameOverScreen = std::make_unique<GameOverScreen>(
-        window.getSize(), font);
-    auto victoryScreen = std::make_unique<VictoryScreen>(
-        window.getSize(), font);
+    NeonMenu     mainMenu(window.getSize(), font);
 
-    GameState state = GameState::MainMenu;
-    sf::Clock clock;
+    auto optionsMenu = std::make_unique<OptionsMenu>(window.getSize(), font, settings);
+    auto gameOverScr = std::make_unique<GameOverScreen>(window.getSize(), font);
+    auto victoryScr = std::make_unique<VictoryScreen>(window.getSize(), font);
+
+    // FIX: Game est créé une seule fois ici, pas à chaque frame
+    std::unique_ptr<Game> game;
+
+    GameState  state = GameState::MainMenu;
+    sf::Clock  clock;
 
     while (window.isOpen())
     {
         float dt = clock.restart().asSeconds();
 
+        // ---- Events ------------------------------------------------
         while (const auto event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
@@ -58,6 +60,7 @@ int main()
             {
                 switch (state)
                 {
+                    // -- Main menu --
                 case GameState::MainMenu:
                 {
                     switch (key->code)
@@ -73,14 +76,15 @@ int main()
                         auto action = mainMenu.confirm();
                         if (action == NeonMenu::Action::Play)
                         {
+                            game = std::make_unique<Game>(window);
                             state = GameState::Playing;
                             std::cout << ">>> PLAY <<<\n";
                         }
                         else if (action == NeonMenu::Action::Options)
                         {
-                            state = GameState::Options;
                             optionsMenu = std::make_unique<OptionsMenu>(
                                 window.getSize(), font, settings);
+                            state = GameState::Options;
                         }
                         else if (action == NeonMenu::Action::Exit)
                         {
@@ -97,46 +101,49 @@ int main()
                     break;
                 }
 
+                // -- Options --
                 case GameState::Options:
                 {
-                    bool back = optionsMenu->handleKey(key->code);
-                    if (back)
+                    if (optionsMenu->handleKey(key->code))
                         state = GameState::MainMenu;
                     break;
                 }
+
+                // -- Playing --
                 case GameState::Playing:
                 {
-                    // ESC = game over (test), V = victory (test)
                     if (key->code == sf::Keyboard::Key::Escape)
                     {
-                        gameOverScreen = std::make_unique<GameOverScreen>(
+                        gameOverScr = std::make_unique<GameOverScreen>(
                             window.getSize(), font);
                         state = GameState::GameOver;
                     }
-                    if (key->code == sf::Keyboard::Key::V)
+                    else if (key->code == sf::Keyboard::Key::V)
                     {
-                        victoryScreen = std::make_unique<VictoryScreen>(
+                        victoryScr = std::make_unique<VictoryScreen>(
                             window.getSize(), font);
                         state = GameState::Victory;
                     }
                     break;
                 }
 
+                // -- Game Over --
                 case GameState::GameOver:
                 {
                     switch (key->code)
                     {
                     case sf::Keyboard::Key::Up:
-                        gameOverScreen->moveUp();
+                        gameOverScr->moveUp();
                         break;
                     case sf::Keyboard::Key::Down:
-                        gameOverScreen->moveDown();
+                        gameOverScr->moveDown();
                         break;
                     case sf::Keyboard::Key::Enter:
                     {
-                        auto action = gameOverScreen->confirm();
+                        auto action = gameOverScr->confirm();
                         if (action == GameOverScreen::Action::Retry)
                         {
+                            game = std::make_unique<Game>(window);
                             state = GameState::Playing;
                             std::cout << ">>> RETRY <<<\n";
                         }
@@ -152,21 +159,23 @@ int main()
                     break;
                 }
 
+                // -- Victory --
                 case GameState::Victory:
                 {
                     switch (key->code)
                     {
                     case sf::Keyboard::Key::Up:
-                        victoryScreen->moveUp();
+                        victoryScr->moveUp();
                         break;
                     case sf::Keyboard::Key::Down:
-                        victoryScreen->moveDown();
+                        victoryScr->moveDown();
                         break;
                     case sf::Keyboard::Key::Enter:
                     {
-                        auto action = victoryScreen->confirm();
+                        auto action = victoryScr->confirm();
                         if (action == VictoryScreen::Action::Continue)
                         {
+                            game = std::make_unique<Game>(window);
                             state = GameState::Playing;
                             std::cout << ">>> CONTINUE <<<\n";
                         }
@@ -185,75 +194,28 @@ int main()
             }
         }
 
+        // ---- Update ------------------------------------------------
         switch (state)
         {
-            case GameState::MainMenu:
-            {
-                mainMenu.update(dt);
-                break;
-            }
-
-            case GameState::Options:
-            {
-                optionsMenu->update(dt);
-                break;
-            }
-
-        }
-    
-        // -- Draw --
-        switch (state)
-        {
-        case GameState::MainMenu:
-            mainMenu.update(dt);
-            break;
-        case GameState::Options:
-            optionsMenu->update(dt);
-            break;
-        case GameState::Playing:
-            break;
-        case GameState::GameOver:
-            gameOverScreen->update(dt);
-            break;
-        case GameState::Victory:
-            victoryScreen->update(dt);
-            break;
+        case GameState::MainMenu:  mainMenu.update(dt);        break;
+        case GameState::Options:   optionsMenu->update(dt);    break;
+        case GameState::Playing:   game->update(dt);           break;
+        case GameState::GameOver:  gameOverScr->update(dt);    break;
+        case GameState::Victory:   victoryScr->update(dt);     break;
         }
 
+        // ---- Draw --------------------------------------------------
         window.clear();
 
         switch (state)
         {
-        case GameState::MainMenu:
-            mainMenu.draw(window);
-            break;
-        case GameState::Options:
-            optionsMenu->draw(window);
-            break;
+        case GameState::MainMenu:  mainMenu.draw(window);      break;
+        case GameState::Options:   optionsMenu->draw(window);  break;
         case GameState::Playing:
-        {
-
-            Game game;
-            game.run();
-
-            sf::RectangleShape bg{ sf::Vector2f{
-                static_cast<float>(window.getSize().x),
-                static_cast<float>(window.getSize().y) } };
-            bg.setFillColor(sf::Color(10, 10, 20));
-            window.draw(bg);
-
-            sf::Text info(font, "PLAYING  -  ESC:gameover  V:victory", 20u);
-            info.setFillColor(sf::Color(100, 100, 120));
-            info.setPosition({ 20.f, 20.f });
-            window.draw(info);
+            if (game) game->render(window);
             break;
-        }
-        case GameState::GameOver:
-            gameOverScreen->draw(window);
-            break;
-        case GameState::Victory:
-            victoryScreen->draw(window);
-            break;
+        case GameState::GameOver:  gameOverScr->draw(window);  break;
+        case GameState::Victory:   victoryScr->draw(window);   break;
         }
 
         window.display();

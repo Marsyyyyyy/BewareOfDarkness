@@ -9,6 +9,7 @@ class Player : public Entity
 private:
 
     bool isGrounded;
+    sf::Sprite sprite;
 
 public:
 

@@ -7,8 +7,7 @@
 class Game
 {
 private:
-
-    sf::RenderWindow window;
+    sf::RenderWindow& window;
     Scene scene;
     Camera2D camera;
     Player player;
@@ -16,10 +15,8 @@ private:
     void processEvents();
 
 public:
-
-    Game();
-
+    Game(sf::RenderWindow& window);
     void update(float dt);
-    void render();
+    void render(sf::RenderWindow& window);
     void run();
 };

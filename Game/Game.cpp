@@ -1,11 +1,11 @@
 #include "Game.hpp"
 #include "Constants.hpp"
 
-Game::Game() :
-    window(sf::VideoMode({ Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT }), "Beware Of Darkness"),
+Game::Game(sf::RenderWindow& window) :
+    window(window),
     camera(window.getSize())
 {
-    camera.setLevelBounds(sf::FloatRect({ 0.f,0.f }, { 4000.f,2000.f }));
+    camera.setLevelBounds(sf::FloatRect({ 0.f, 0.f }, { 4000.f, 2000.f }));
 }
 
 void Game::run()
@@ -18,7 +18,7 @@ void Game::run()
 
         processEvents();
         update(dt);
-        render();
+        render(window);
     }
 }
 
@@ -43,15 +43,8 @@ void Game::update(float dt)
     );
 }
 
-void Game::render()
+void Game::render(sf::RenderWindow& window)
 {
-    window.clear(sf::Color::Black);
-
-    // Appliquer la caméra
     camera.apply(window);
-
-    // Render du monde
     scene.render(window);
-
-    window.display();
 }

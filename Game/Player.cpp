@@ -1,20 +1,17 @@
 #include "Player.hpp"
 #include "Constants.hpp"
+#include "ResourceManager.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player()
+Player::Player() : sprite(ResourceManager::getInstance().loadTexture("player", "assets/PlayerUp.png"))
 {
-    body.setSize({ 40,60 });
-    body.setFillColor(sf::Color::White);
-    body.setPosition({ 200,200 });
-
     isGrounded = false;
-
+    sprite.setPosition({ 100.f, 100.f });
 }
 
 sf::Vector2f Player::getPosition() const
 {
-    return body.getPosition();
+    return sprite.getPosition();
 }
 
 sf::Vector2f Player::getVelocity() const
@@ -25,13 +22,10 @@ sf::Vector2f Player::getVelocity() const
 void Player::update(float dt, std::vector<Platform>& platforms)
 {
     velocity.x = 0;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
         velocity.x = -Constants::PLAYER_SPEED;
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         velocity.x = Constants::PLAYER_SPEED;
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && isGrounded)
     {
         velocity.y = Constants::PLAYER_JUMP;
@@ -39,12 +33,11 @@ void Player::update(float dt, std::vector<Platform>& platforms)
     }
 
     velocity.y += Constants::GRAVITY * dt;
-
-    body.move(velocity * dt);
+    sprite.move(velocity * dt);
 
     for (auto& p : platforms)
     {
-        if (body.getGlobalBounds().findIntersection(p.getBounds()))
+        if (sprite.getGlobalBounds().findIntersection(p.getBounds()))
         {
             velocity.y = 0;
             isGrounded = true;
@@ -54,5 +47,5 @@ void Player::update(float dt, std::vector<Platform>& platforms)
 
 void Player::render(sf::RenderWindow& window)
 {
-    window.draw(body);
+    window.draw(sprite);
 }
