@@ -12,6 +12,11 @@ Player::Player()
 
 }
 
+sf::Vector2f Player::getPosition() const
+{
+    return body.getPosition();
+}
+
 sf::Vector2f Player::getVelocity() const
 {
     return velocity;

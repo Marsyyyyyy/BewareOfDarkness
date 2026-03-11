@@ -4,11 +4,8 @@
 #include "Menu.hpp"
 #include "Game.hpp"
 #include "Options.hpp"
-<<<<<<< HEAD
-=======
 #include "GameOver.hpp"
 #include "Victory.hpp"
->>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
 #include <iostream>
 #include <filesystem>
 #include <memory>
@@ -40,13 +37,10 @@ int main()
     NeonMenu mainMenu(window.getSize(), font);
     auto optionsMenu = std::make_unique<OptionsMenu>(
         window.getSize(), font, settings);
-<<<<<<< HEAD
-=======
     auto gameOverScreen = std::make_unique<GameOverScreen>(
         window.getSize(), font);
     auto victoryScreen = std::make_unique<VictoryScreen>(
         window.getSize(), font);
->>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
 
     GameState state = GameState::MainMenu;
     sf::Clock clock;
@@ -110,9 +104,6 @@ int main()
                         state = GameState::MainMenu;
                     break;
                 }
-
-<<<<<<< HEAD
-=======
                 case GameState::Playing:
                 {
                     // ESC = game over (test), V = victory (test)
@@ -190,14 +181,12 @@ int main()
                     }
                     break;
                 }
->>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
                 }
             }
         }
 
         switch (state)
         {
-<<<<<<< HEAD
             case GameState::MainMenu:
             {
                 mainMenu.update(dt);
@@ -213,7 +202,8 @@ int main()
         }
     
         // -- Draw --
-=======
+        switch (state)
+        {
         case GameState::MainMenu:
             mainMenu.update(dt);
             break;
@@ -230,7 +220,6 @@ int main()
             break;
         }
 
->>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
         window.clear();
 
         switch (state)
@@ -243,10 +232,10 @@ int main()
             break;
         case GameState::Playing:
         {
-<<<<<<< HEAD
+
             Game game;
             game.run();
-=======
+
             sf::RectangleShape bg{ sf::Vector2f{
                 static_cast<float>(window.getSize().x),
                 static_cast<float>(window.getSize().y) } };
@@ -258,7 +247,6 @@ int main()
             info.setPosition({ 20.f, 20.f });
             window.draw(info);
             break;
->>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
         }
         case GameState::GameOver:
             gameOverScreen->draw(window);
@@ -270,5 +258,6 @@ int main()
 
         window.display();
     }
+
     return 0;
 }
