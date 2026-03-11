@@ -9,6 +9,12 @@ Player::Player()
     body.setPosition({ 200,200 });
 
     isGrounded = false;
+
+}
+
+sf::Vector2f Player::getVelocity() const
+{
+    return velocity;
 }
 
 void Player::update(float dt, std::vector<Platform>& platforms)

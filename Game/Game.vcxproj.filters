@@ -63,6 +63,9 @@
     <ClCompile Include="Platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.hpp">
@@ -72,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Physics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.hpp">
@@ -101,13 +101,16 @@
     <ClInclude Include="Menu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sound_Indicator.hpp">
+    <ClInclude Include="Colors.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Colors.hpp">
-		<Filter>Header Files</Filter>
-	</ClInclude>
     <ClInclude Include="Platform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
