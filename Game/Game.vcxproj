@@ -98,6 +98,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameOver.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="LightSystem.hpp" />
     <ClInclude Include="Menu.hpp" />
@@ -107,6 +108,10 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Settings.hpp" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Victory.hpp" />
+>>>>>>> 92483e7effe16c599d3dcbdc828916494b02ad60
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

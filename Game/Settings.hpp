@@ -20,9 +20,6 @@ struct GameSettings
 
     // -- Display --
     int brightness = 70;   // 0 - 100
-
-    // -- Accessibilite --
-    bool hearingMode = false;  // mode malentendant
 };
 
 // Helper : convertit une touche en texte lisible

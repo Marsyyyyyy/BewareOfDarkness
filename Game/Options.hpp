@@ -70,9 +70,6 @@ public:
         m_items.push_back({ "--- DISPLAY ---",   OptionType::Label,   nullptr, nullptr, nullptr, NeonColors::Purple });
         m_items.push_back({ "Brightness",        OptionType::Slider,  nullptr, &settings.brightness, nullptr, NeonColors::Purple });
 
-        m_items.push_back({ "--- ACCESSIBILITY ---", OptionType::Label, nullptr, nullptr, nullptr, NeonColors::Green });
-        m_items.push_back({ "Hearing Mode",      OptionType::Toggle,  nullptr, nullptr, &settings.hearingMode, NeonColors::Green });
-
         m_items.push_back({ "BACK",              OptionType::Back,    nullptr, nullptr, nullptr, NeonColors::Orange });
 
         // Selectionner le premier item navigable
