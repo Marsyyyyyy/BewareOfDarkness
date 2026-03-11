@@ -96,6 +96,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="GameOver.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="LightSystem.hpp" />
     <ClInclude Include="Menu.hpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="Victory.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
