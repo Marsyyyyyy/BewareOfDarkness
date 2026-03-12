@@ -2,8 +2,9 @@
 
 Camera2D::Camera2D(sf::Vector2u windowSize)
 {
-    view.setSize(sf::Vector2f(windowSize));
-    view.setCenter(sf::Vector2f(windowSize) / 2.f);
+    // A bit less zoomed than before, so we see more of the level.
+    view.setSize(sf::Vector2f(windowSize) / 1.3f);
+    view.setCenter(sf::Vector2f(windowSize) / 2.6f);
 
     smoothSpeed = 6.f;
 
@@ -21,34 +22,15 @@ void Camera2D::update(float dt, const sf::Vector2f& playerPos, float playerVeloc
 {
     sf::Vector2f camCenter = view.getCenter();
 
-    sf::FloatRect currentDeadZone(
-        { camCenter.x - deadZone.size.x / 2.f,
-         camCenter.y - deadZone.size.y / 2.f },
-        deadZone.size
-    );
+    // Directly track the player's position without any deadzone or delay
+    sf::Vector2f target = playerPos;
 
-    sf::Vector2f target = camCenter;
+    // Shift camera UP so the player appears near the bottom of the screen.
+    // Reduced from -250.f to slightly lower the camera.
+    target.y -= 180.f;
 
-    if (playerPos.x < currentDeadZone.position.x)
-        target.x = playerPos.x + deadZone.size.x / 2.f;
-
-    if (playerPos.x > currentDeadZone.position.x + currentDeadZone.size.x)
-        target.x = playerPos.x - deadZone.size.x / 2.f;
-
-    if (playerPos.y < currentDeadZone.position.y)
-        target.y = playerPos.y + deadZone.size.y / 2.f;
-
-    if (playerPos.y > currentDeadZone.position.y + currentDeadZone.size.y)
-        target.y = playerPos.y - deadZone.size.y / 2.f;
-
-    if (playerVelocityX > 0)
-        lookAhead.x = 100.f;
-    else if (playerVelocityX < 0)
-        lookAhead.x = -100.f;
-
-    target += lookAhead;
-
-    camCenter += (target - camCenter) * smoothSpeed * dt;
+    // Instantly snap to target instead of smoothing
+    camCenter = target;
 
     float halfW = view.getSize().x / 2.f;
     float halfH = view.getSize().y / 2.f;

@@ -7,11 +7,15 @@ Player::Player() : sprite(ResourceManager::getInstance().loadTexture("player", "
 {
     isGrounded = false;
     sprite.setPosition({ 100.f, 100.f });
+    
+    // Default to aiming right
+    lastAimAngle = 0.f; 
 }
 
 sf::Vector2f Player::getPosition() const
 {
-    return sprite.getPosition();
+    sf::FloatRect bounds = sprite.getGlobalBounds();
+    return { bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f };
 }
 
 sf::Vector2f Player::getVelocity() const
@@ -19,14 +23,34 @@ sf::Vector2f Player::getVelocity() const
     return velocity;
 }
 
-void Player::update(float dt, std::vector<Platform>& platforms)
+float Player::getAimAngle() const
+{
+    return lastAimAngle;
+}
+
+void Player::update(float dt, std::vector<Platform>& platforms, const GameSettings& settings)
 {
     velocity.x = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
+    
+    // Check horizontal movement and update aim
+    if (sf::Keyboard::isKeyPressed(settings.moveLeft))
+    {
         velocity.x = -Constants::PLAYER_SPEED;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        lastAimAngle = 180.f; // Aim Left
+    }
+    if (sf::Keyboard::isKeyPressed(settings.moveRight))
+    {
         velocity.x = Constants::PLAYER_SPEED;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && isGrounded)
+        lastAimAngle = 0.f; // Aim Right
+    }
+    
+    // Vertical aiming (Z/Up overrides horizontal aim visually, but we don't change velocity.x)
+    if (sf::Keyboard::isKeyPressed(settings.moveUp))
+    {
+        lastAimAngle = -90.f; // Aim Up
+    }
+
+    if (sf::Keyboard::isKeyPressed(settings.flashlight) && isGrounded)
     {
         velocity.y = Constants::PLAYER_JUMP;
         isGrounded = false;
@@ -34,7 +58,7 @@ void Player::update(float dt, std::vector<Platform>& platforms)
 
     velocity.y += Constants::GRAVITY * dt;
 
-    // Déplacer X puis Y séparément pour résolution correcte
+    // Dï¿½placer X puis Y sï¿½parï¿½ment pour rï¿½solution correcte
     sprite.move({ velocity.x * dt, 0.f });
     for (auto& p : platforms)
     {

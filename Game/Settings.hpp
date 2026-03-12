@@ -10,7 +10,6 @@ struct GameSettings
 {
     // -- Controles --
     sf::Keyboard::Key moveUp = sf::Keyboard::Key::Z;
-    sf::Keyboard::Key moveDown = sf::Keyboard::Key::S;
     sf::Keyboard::Key moveLeft = sf::Keyboard::Key::Q;
     sf::Keyboard::Key moveRight = sf::Keyboard::Key::D;
     sf::Keyboard::Key flashlight = sf::Keyboard::Key::Space;
