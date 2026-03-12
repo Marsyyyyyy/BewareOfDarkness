@@ -40,11 +40,22 @@ int main()
     auto gameOverScr = std::make_unique<GameOverScreen>(window.getSize(), font);
     auto victoryScr = std::make_unique<VictoryScreen>(window.getSize(), font);
 
-    // FIX: Game est créé une seule fois ici, pas à chaque frame
     std::unique_ptr<Game> game;
 
     GameState  state = GameState::MainMenu;
     sf::Clock  clock;
+
+    // Callback Victoire
+    auto triggerVictory = [&]() {
+        victoryScr = std::make_unique<VictoryScreen>(window.getSize(), font);
+        state = GameState::Victory;
+        };
+
+    // Callback GameOver
+    auto triggerGameOver = [&]() {
+        gameOverScr = std::make_unique<GameOverScreen>(window.getSize(), font);
+        state = GameState::GameOver;
+        };
 
     while (window.isOpen())
     {
@@ -76,7 +87,7 @@ int main()
                         auto action = mainMenu.confirm();
                         if (action == NeonMenu::Action::Play)
                         {
-                            game = std::make_unique<Game>(window);
+                            game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
                             state = GameState::Playing;
                             std::cout << ">>> PLAY <<<\n";
                         }
@@ -143,7 +154,7 @@ int main()
                         auto action = gameOverScr->confirm();
                         if (action == GameOverScreen::Action::Retry)
                         {
-                            game = std::make_unique<Game>(window);
+                            game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
                             state = GameState::Playing;
                             std::cout << ">>> RETRY <<<\n";
                         }
@@ -175,7 +186,7 @@ int main()
                         auto action = victoryScr->confirm();
                         if (action == VictoryScreen::Action::Continue)
                         {
-                            game = std::make_unique<Game>(window);
+                            game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
                             state = GameState::Playing;
                             std::cout << ">>> CONTINUE <<<\n";
                         }
@@ -206,6 +217,11 @@ int main()
 
         // ---- Draw --------------------------------------------------
         window.clear();
+
+        if (state != GameState::Playing)
+        {
+            window.setView(window.getDefaultView());
+        }
 
         switch (state)
         {

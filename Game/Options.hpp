@@ -8,6 +8,7 @@
 #include <functional>
 #include "Settings.hpp"
 #include "Colors.hpp"
+#include "LightSystem.hpp"
 
 // Type d'option
 enum class OptionType { KeyBind, Slider, Toggle, Label, Back };
@@ -36,6 +37,7 @@ public:
         , m_settings(settings)
         , m_titleText(font, "OPTIONS", 48u)
         , m_hintText(font, "UP/DOWN : Navigate   LEFT/RIGHT : Adjust   ENTER : Rebind   ESC : Back", 12u)
+        /*m_previewLights(windowSize)*/
     {
         float cx = windowSize.x / 2.f;
 
@@ -59,7 +61,6 @@ public:
         // Labels = titres de section (non selectionnables)
         m_items.push_back({ "--- CONTROLS ---",  OptionType::Label,   nullptr, nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Move Up",           OptionType::KeyBind, &settings.moveUp,    nullptr, nullptr, NeonColors::Cyan });
-        m_items.push_back({ "Move Down",         OptionType::KeyBind, &settings.moveDown,  nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Move Left",         OptionType::KeyBind, &settings.moveLeft,  nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Move Right",        OptionType::KeyBind, &settings.moveRight, nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Flashlight",        OptionType::KeyBind, &settings.flashlight, nullptr, nullptr, NeonColors::Cyan });
@@ -137,19 +138,27 @@ public:
     void update(float dt)
     {
         m_time += dt;
+    //    m_previewLights.clearLights();
+    //    // Add a central glow
+    //    m_previewLights.addLight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, 250.f);
+    //    // Add a slowly sweeping flashlight
+    //    m_previewLights.addFlashlight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, m_time * 30.f, 150.f, 600.f);
     }
 
-    void draw(sf::RenderTarget& target) const
+    void draw(sf::RenderWindow& window)
     {
         // Fond
         sf::RectangleShape bg{ sf::Vector2f{
             static_cast<float>(m_windowSize.x),
             static_cast<float>(m_windowSize.y) } };
         bg.setFillColor(NeonColors::DarkBg);
-        target.draw(bg);
+        window.draw(bg);
+
+        // Draw the live preview lights (passing the live settings reference)
+        /*m_previewLights.render(window, m_settings);*/
 
         // Titre
-        target.draw(m_titleText);
+        window.draw(m_titleText);
 
         // Items
         float startY = m_windowSize.y * 0.16f;
@@ -175,7 +184,7 @@ public:
                 label.setOrigin({ lb.position.x + lb.size.x / 2.f,
                                   lb.position.y + lb.size.y / 2.f });
                 label.setPosition({ cx, y });
-                target.draw(label);
+                window.draw(label);
                 continue;
             }
 
@@ -200,7 +209,7 @@ public:
             }
 
             if (item.type != OptionType::Back)
-                target.draw(nameText);
+                window.draw(nameText);
 
             float rightX = cx + 120.f;
 
@@ -230,12 +239,12 @@ public:
                 auto vb = valText.getLocalBounds();
                 valText.setOrigin({ 0.f, vb.position.y + vb.size.y / 2.f });
                 valText.setPosition({ rightX, y });
-                target.draw(valText);
+                window.draw(valText);
             }
             else if (item.type == OptionType::Slider && item.sliderPtr)
             {
                 int val = *item.sliderPtr;
-                drawSlider(target, rightX, y, val, item.neonColor, isSel);
+                drawSlider(window, rightX, y, val, item.neonColor, isSel);
             }
             else if (item.type == OptionType::Toggle && item.togglePtr)
             {
@@ -252,7 +261,7 @@ public:
                 auto vb = valText.getLocalBounds();
                 valText.setOrigin({ 0.f, vb.position.y + vb.size.y / 2.f });
                 valText.setPosition({ rightX, y });
-                target.draw(valText);
+                window.draw(valText);
             }
             else if (item.type == OptionType::Back)
             {
@@ -262,7 +271,7 @@ public:
                 nameText.setOrigin({ backBounds.position.x + backBounds.size.x / 2.f,
                                      backBounds.position.y + backBounds.size.y / 2.f });
                 // On redraw par dessus
-                target.draw(nameText);
+                window.draw(nameText);
             }
 
             // Selection indicator (petit triangle)
@@ -277,7 +286,7 @@ public:
                 uint8_t ta = static_cast<uint8_t>(200 * pulse);
                 tri.setFillColor({ item.neonColor.r, item.neonColor.g,
                                    item.neonColor.b, ta });
-                target.draw(tri);
+                window.draw(tri);
             }
         }
 
@@ -285,7 +294,7 @@ public:
         float hp = std::sin(m_time * 1.2f) * 0.3f + 0.7f;
         m_hintText.setFillColor({ 80, 80, 100,
             static_cast<uint8_t>(60 + 60 * hp) });
-        target.draw(m_hintText);
+        window.draw(m_hintText);
     }
 
 private:
@@ -320,7 +329,7 @@ private:
         }
     }
 
-    void drawSlider(sf::RenderTarget& target, float x, float y,
+    void drawSlider(sf::RenderWindow& window, float x, float y,
         int value, sf::Color neonColor, bool selected) const
     {
         float barW = 150.f;
@@ -331,7 +340,7 @@ private:
         barBg.setOrigin({ 0.f, barH / 2.f });
         barBg.setPosition({ x, y });
         barBg.setFillColor(sf::Color(30, 30, 50, 200));
-        target.draw(barBg);
+        window.draw(barBg);
 
         // Remplissage
         float fillW = barW * (value / 100.f);
@@ -343,7 +352,7 @@ private:
 
             uint8_t a = selected ? static_cast<uint8_t>(255) : static_cast<uint8_t>(160);
             barFill.setFillColor({ neonColor.r, neonColor.g, neonColor.b, a });
-            target.draw(barFill);
+            window.draw(barFill);
         }
 
         // Glow si selectionne
@@ -355,7 +364,7 @@ private:
             glow.setPosition({ x - 4.f, y });
             uint8_t ga = static_cast<uint8_t>(25 * pulse);
             glow.setFillColor({ neonColor.r, neonColor.g, neonColor.b, ga });
-            target.draw(glow);
+            window.draw(glow);
         }
 
         // Pourcentage
@@ -366,7 +375,7 @@ private:
         auto pb = pctText.getLocalBounds();
         pctText.setOrigin({ 0.f, pb.position.y + pb.size.y / 2.f });
         pctText.setPosition({ x + barW + 12.f, y });
-        target.draw(pctText);
+        window.draw(pctText);
     }
 
     const sf::Font& m_font;
@@ -375,6 +384,7 @@ private:
     std::vector<OptionItem>   m_items;
     sf::Text                  m_titleText;
     mutable sf::Text          m_hintText;
+    /*LightSystem               m_previewLights;*/
     int                       m_selected = 0;
     bool                      m_rebinding = false;
     float                     m_time = 0.f;

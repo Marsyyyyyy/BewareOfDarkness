@@ -79,7 +79,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -91,12 +93,16 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PressurePlate.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="VictoryZone.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.hpp" />
     <ClInclude Include="Camera2D.hpp" />
     <ClInclude Include="Colors.hpp" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="Door.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
@@ -109,10 +115,12 @@
     <ClInclude Include="Physics.hpp" />
     <ClInclude Include="Platform.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PressurePlate.hpp" />
     <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Victory.hpp" />
+    <ClInclude Include="VictoryZone.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

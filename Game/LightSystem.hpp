@@ -1,25 +1,39 @@
-#pragma once
-
-#include <SFML/Graphics.hpp>
-#include <vector>
-
-struct Light
-{
-    sf::Vector2f position;
-    float radius;
-};
-
-class LightSystem
-{
-private:
-
-    std::vector<Light> lights;
-
-public:
-
-    LightSystem();
-
-    void addLight(sf::Vector2f pos, float radius);
-
-    void render(sf::RenderWindow& window);
-};
+//#pragma once
+//
+//#include <SFML/Graphics.hpp>
+//#include "Settings.hpp"
+//#include <vector>
+//
+//struct Light
+//{
+//    sf::Vector2f position;
+//    float radius;
+//};
+//
+//struct Flashlight
+//{
+//    sf::Vector2f position;
+//    float angle;
+//    float radius;
+//    float distance;
+//};
+//
+//class LightSystem
+//{
+//private:
+//
+//    std::vector<Light> lights;
+//    std::vector<Flashlight> flashlights;
+//    sf::RenderTexture lightMap;
+//    sf::Vector2u windowSize;
+//
+//public:
+//
+//    LightSystem(sf::Vector2u windowSize);
+//
+//    void clearLights();
+//    void addLight(sf::Vector2f pos, float radius);
+//    void addFlashlight(sf::Vector2f pos, float angle, float radius, float distance);
+//
+//    void render(sf::RenderWindow& window, const GameSettings& settings);
+//};
