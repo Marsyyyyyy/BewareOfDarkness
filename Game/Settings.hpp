@@ -19,6 +19,7 @@ struct GameSettings
 
     // -- Display --
     int brightness = 70;   // 0 - 100
+    bool lightsEnabled = true;
 };
 
 // Helper : convertit une touche en texte lisible

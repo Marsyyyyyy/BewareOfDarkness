@@ -5,6 +5,7 @@ Scene::Scene(sf::Vector2u windowSize, const GameSettings& settings,
     std::function<void()> victoryCallback,
     std::function<void()> gameOverCallback)
     : settings(settings)
+    , lights(windowSize)
     , background(windowSize)
     , box({ 1700.f, 880.f })
     , door({ 2500.f, 380.f }, { 100.f, 600.f })
@@ -86,6 +87,14 @@ void Scene::renderWorld(sf::RenderWindow& window)
     box.render(window);
     victoryZone.render(window);
     player.render(window);
+    
+    if (settings.lightsEnabled)
+    {
+        lights.clearLights();
+        lights.addLight(player.getPosition() + sf::Vector2f(0.f, -20.f), 200.f);
+        lights.addFlashlight(player.getPosition() + sf::Vector2f(0.f, -20.f), player.getAimAngle(), 120.f, 500.f);
+        lights.render(window, settings);
+    }
 }
 
 sf::Vector2f Scene::getPlayerPosition() const { return player.getPosition(); }

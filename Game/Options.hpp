@@ -37,7 +37,7 @@ public:
         , m_settings(settings)
         , m_titleText(font, "OPTIONS", 48u)
         , m_hintText(font, "UP/DOWN : Navigate   LEFT/RIGHT : Adjust   ENTER : Rebind   ESC : Back", 12u)
-        /*m_previewLights(windowSize)*/
+        , m_previewLights(windowSize)
     {
         float cx = windowSize.x / 2.f;
 
@@ -70,6 +70,7 @@ public:
 
         m_items.push_back({ "--- DISPLAY ---",   OptionType::Label,   nullptr, nullptr, nullptr, NeonColors::Purple });
         m_items.push_back({ "Brightness",        OptionType::Slider,  nullptr, &settings.brightness, nullptr, NeonColors::Purple });
+        m_items.push_back({ "Night Mode",        OptionType::Toggle,  nullptr, nullptr, &settings.lightsEnabled, NeonColors::Purple });
 
         m_items.push_back({ "BACK",              OptionType::Back,    nullptr, nullptr, nullptr, NeonColors::Orange });
 
@@ -138,11 +139,11 @@ public:
     void update(float dt)
     {
         m_time += dt;
-    //    m_previewLights.clearLights();
-    //    // Add a central glow
-    //    m_previewLights.addLight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, 250.f);
-    //    // Add a slowly sweeping flashlight
-    //    m_previewLights.addFlashlight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, m_time * 30.f, 150.f, 600.f);
+        m_previewLights.clearLights();
+        // Add a central glow
+        m_previewLights.addLight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, 250.f);
+        // Add a slowly sweeping flashlight
+        m_previewLights.addFlashlight({ m_windowSize.x / 2.f, m_windowSize.y / 2.f }, m_time * 30.f, 150.f, 600.f);
     }
 
     void draw(sf::RenderWindow& window)
@@ -155,7 +156,7 @@ public:
         window.draw(bg);
 
         // Draw the live preview lights (passing the live settings reference)
-        /*m_previewLights.render(window, m_settings);*/
+        m_previewLights.render(window, m_settings);
 
         // Titre
         window.draw(m_titleText);
@@ -384,7 +385,7 @@ private:
     std::vector<OptionItem>   m_items;
     sf::Text                  m_titleText;
     mutable sf::Text          m_hintText;
-    /*LightSystem               m_previewLights;*/
+    LightSystem               m_previewLights;
     int                       m_selected = 0;
     bool                      m_rebinding = false;
     float                     m_time = 0.f;

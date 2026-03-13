@@ -153,7 +153,7 @@ void NeonButton::draw(sf::RenderTarget& rt) const
 NeonMenu::NeonMenu(sf::Vector2u windowSize, const sf::Font& font)
     : m_font(font)
     , m_windowSize(windowSize)
-    , m_title(font, "Beware  Of  Darkness", 54u, sf::Color(0, 255, 255))
+    , m_title(font, "Beware Of Darkness", 54u, sf::Color(0, 255, 255))
     , m_subtitle(font, "INTO  THE  UNKNOWN", 22u)
     , m_hint(font, "UP / DOWN   -   ENTER", 14u)
     , m_footer(font, "2026  -  NINI DEV", 13u)

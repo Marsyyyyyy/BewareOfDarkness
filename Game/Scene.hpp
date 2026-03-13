@@ -18,7 +18,7 @@ private:
     Player player;
     std::vector<Platform> platforms;
     Enemy enemy;
-    /*LightSystem lights;*/
+    LightSystem lights;
 
     Box box;
     Door door;
