@@ -6,6 +6,7 @@
 #include "Options.hpp"
 #include "GameOver.hpp"
 #include "Victory.hpp"
+#include "AudioManager.hpp"
 #include <iostream>
 #include <filesystem>
 #include <memory>
@@ -19,6 +20,8 @@ int main()
         "Beware Of Darkness",
         sf::Style::Close | sf::Style::Titlebar);
     window.setFramerateLimit(60);
+
+    AudioManager::getInstance().playMusic("assets/MenuMusic.wav");
 
     sf::Font font;
     try
@@ -88,6 +91,7 @@ int main()
                         if (action == NeonMenu::Action::Play)
                         {
                             game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
+                            AudioManager::getInstance().playMusic("assets/GameMusic.wav");
                             state = GameState::Playing;
                             std::cout << ">>> PLAY <<<\n";
                         }
@@ -155,12 +159,14 @@ int main()
                         if (action == GameOverScreen::Action::Retry)
                         {
                             game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
+                            AudioManager::getInstance().playMusic("assets/GameMusic.wav");
                             state = GameState::Playing;
                             std::cout << ">>> RETRY <<<\n";
                         }
                         else if (action == GameOverScreen::Action::Menu)
                         {
                             state = GameState::MainMenu;
+                            AudioManager::getInstance().playMusic("assets/MenuMusic.wav");
                         }
                         break;
                     }
@@ -187,12 +193,14 @@ int main()
                         if (action == VictoryScreen::Action::Continue)
                         {
                             game = std::make_unique<Game>(window, settings, triggerVictory, triggerGameOver);
+                            AudioManager::getInstance().playMusic("assets/GameMusic.wav");
                             state = GameState::Playing;
                             std::cout << ">>> CONTINUE <<<\n";
                         }
                         else if (action == VictoryScreen::Action::Menu)
                         {
                             state = GameState::MainMenu;
+                            AudioManager::getInstance().playMusic("assets/MenuMusic.wav");
                         }
                         break;
                     }
@@ -206,6 +214,7 @@ int main()
         }
 
         // ---- Update ------------------------------------------------
+        AudioManager::getInstance().setVolume((float)settings.volume);
         switch (state)
         {
         case GameState::MainMenu:  mainMenu.update(dt);        break;
