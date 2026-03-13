@@ -52,12 +52,14 @@ int main()
     auto triggerVictory = [&]() {
         victoryScr = std::make_unique<VictoryScreen>(window.getSize(), font);
         state = GameState::Victory;
+        AudioManager::getInstance().playMusic("assets/VictoryMusic.ogg");
         };
 
     // Callback GameOver
     auto triggerGameOver = [&]() {
         gameOverScr = std::make_unique<GameOverScreen>(window.getSize(), font);
         state = GameState::GameOver;
+        AudioManager::getInstance().playMusic("assets/GameOverMusic.ogg");
         };
 
     while (window.isOpen())
@@ -132,12 +134,14 @@ int main()
                         gameOverScr = std::make_unique<GameOverScreen>(
                             window.getSize(), font);
                         state = GameState::GameOver;
+                        AudioManager::getInstance().playMusic("assets/GameOverMusic.ogg");
                     }
                     else if (key->code == sf::Keyboard::Key::V)
                     {
                         victoryScr = std::make_unique<VictoryScreen>(
                             window.getSize(), font);
                         state = GameState::Victory;
+                        AudioManager::getInstance().playMusic("assets/VictoryMusic.ogg");
                     }
                     break;
                 }
