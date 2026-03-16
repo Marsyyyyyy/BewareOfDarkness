@@ -90,6 +90,9 @@ void Player::update(float dt, std::vector<Platform>& platforms, const GameSettin
             }
         }
     }
+
+    if (sprite.getPosition().x < 100.f)
+        sprite.setPosition({ 100.f, sprite.getPosition().y });
 }
 
 void Player::render(sf::RenderWindow& window)

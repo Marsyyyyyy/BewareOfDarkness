@@ -11,7 +11,7 @@ Game::Game(sf::RenderWindow& window, const GameSettings& settings,
     onVictory(victoryCallback)
 {
     // Game.cpp - ajuster les bounds pour bloquer la caméra au sol
-    camera.setLevelBounds(sf::FloatRect({ 0.f, 0.f }, { 4000.f, 1080.f }));
+    camera.setLevelBounds(sf::FloatRect({ 0.f, 0.f }, { 5000.f, 1080.f }));
 }
 
 void Game::update(float dt)

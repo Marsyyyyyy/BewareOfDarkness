@@ -6,6 +6,7 @@ Scene::Scene(sf::Vector2u windowSize, const GameSettings& settings,
     std::function<void()> gameOverCallback)
     : settings(settings)
     , lights(windowSize)
+    , enemy([&]() { onGameOver(); })
     , background(windowSize)
     , box({ 1700.f, 880.f })
     , door({ 2500.f, 380.f }, { 100.f, 600.f })
@@ -14,21 +15,24 @@ Scene::Scene(sf::Vector2u windowSize, const GameSettings& settings,
     , onVictory(victoryCallback)
     , onGameOver(gameOverCallback)
 {
-    platforms.push_back(Platform({ 0.f,    980.f }, { 700.f,  100.f }));
-    platforms.push_back(Platform({ 950.f,  980.f }, { 3050.f, 100.f }));
-    platforms.push_back(Platform({ 1200.f, 880.f }, { 120.f,  100.f }));
-    platforms.push_back(Platform({ 3500.f, 700.f }, { 60.f,   380.f }));
+    platforms.push_back(Platform({ -1000.f, 980.f }, { 1700.f, 100.f })); // sol gauche étendu jusqu'à x=700
+    platforms.push_back(Platform({ 950.f,   980.f }, { 3050.f, 100.f })); // sol droit inchangé
+    platforms.push_back(Platform({ 1200.f,  880.f }, { 120.f,  100.f })); // mur bas
+    platforms.push_back(Platform({ 3500.f,  700.f }, { 60.f,   380.f })); // mur final
 }
 
 void Scene::update(float dt)
 {
-    // Solides de base (sans la box)
+    // Solides de base
     std::vector<Platform> allSolids = platforms;
     if (!door.isOpen())
         allSolids.push_back(Platform({ 2500.f, 380.f }, { 100.f, 600.f }));
 
-    // Update joueur sans la box
+    // Update joueur
     player.update(dt, allSolids, settings);
+
+    // Update ennemie
+    enemy.update(dt, player.getPosition(), allSolids);
 
     // Update box
     box.update(dt, allSolids, player.getBounds(), player.getVelocity());
