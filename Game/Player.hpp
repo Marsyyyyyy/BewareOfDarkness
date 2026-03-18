@@ -11,6 +11,14 @@ private:
 
     bool isGrounded;
     sf::Sprite sprite;
+    sf::Texture walkTexture;
+    sf::Texture upTexture;
+    bool facingRight = true;
+
+    int currentFrame = 0;
+    float animTimer = 0.f;
+    float animFrameTime = 0.12f;
+    bool lookingUp = false;
 
 public:
 

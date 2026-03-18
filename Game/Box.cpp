@@ -1,16 +1,23 @@
 #include "Box.hpp"
-#include "Constants.hpp"
+#include "Constants.hpp"    
+#include "ResourceManager.hpp"
 #include <iostream>
 
 Box::Box(sf::Vector2f pos)
+    : sprite(ResourceManager::getInstance().loadTexture("box", "assets/box.png"))
 {
-    shape.setSize({ 80.f, 80.f });
+    shape.setSize({ 60.f, 60.f });
     shape.setPosition(pos);
-    shape.setFillColor(sf::Color(180, 60, 0));
+    shape.setFillColor(sf::Color::Transparent);
+
+    float scale = 60.f / 300.f;
+    sprite.setScale({ scale, scale });
+    sprite.setPosition(pos);
 }
 
 void Box::update(float dt, std::vector<Platform>& platforms,
-    sf::FloatRect playerBounds, sf::Vector2f playerVel)
+    sf::FloatRect playerBounds, sf::Vector2f playerVel,
+    sf::FloatRect plateBounds)
 {
     velocity.y += Constants::GRAVITY * dt;
 
@@ -24,15 +31,9 @@ void Box::update(float dt, std::vector<Platform>& platforms,
         float boxTop = shape.getPosition().y;
         bool playerOnTop = playerBottom < boxTop + 8.f;
 
-        std::cout << "INTERSECTION! playerOnTop=" << playerOnTop
-            << " playerVel.x=" << playerVel.x
-            << " playerBottom=" << playerBottom
-            << " boxTop=" << boxTop << "\n";
-
         if (!playerOnTop && std::abs(playerVel.x) > 10.f)
         {
             velocity.x = playerVel.x;
-            std::cout << "PUSH! velocity.x=" << velocity.x << "\n";
         }
     }
 
@@ -61,24 +62,16 @@ void Box::update(float dt, std::vector<Platform>& platforms,
             if (velocity.y < 0) { shape.move(sf::Vector2f(0.f, inter->size.y)); velocity.y = 0; }
         }
     }
+
+    auto onPlate = shape.getGlobalBounds().findIntersection(plateBounds);
+    if (onPlate && isGrounded)
+        spriteOffset = -8.f; // monter le sprite
+    else
+        spriteOffset = 0.f;
 }
 
 void Box::render(sf::RenderWindow& window)
 {
-    window.draw(shape);
-
-    sf::RectangleShape line1({ 70.f, 6.f });
-    line1.setFillColor(sf::Color::Red);
-    line1.setOrigin({ 35.f, 3.f });
-    line1.setPosition(shape.getPosition() + sf::Vector2f(40.f, 40.f));
-    line1.setRotation(sf::degrees(45));
-
-    sf::RectangleShape line2({ 70.f, 6.f });
-    line2.setFillColor(sf::Color::Red);
-    line2.setOrigin({ 35.f, 3.f });
-    line2.setPosition(shape.getPosition() + sf::Vector2f(40.f, 40.f));
-    line2.setRotation(sf::degrees(-45));
-
-    window.draw(line1);
-    window.draw(line2);
+    sprite.setPosition(shape.getPosition() + sf::Vector2f(0.f, spriteOffset));
+    window.draw(sprite);
 }

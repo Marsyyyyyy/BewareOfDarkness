@@ -10,7 +10,7 @@ Scene::Scene(sf::Vector2u windowSize, const GameSettings& settings,
     , background(windowSize)
     , box({ 1700.f, 880.f })
     , door({ 2500.f, 380.f }, { 100.f, 600.f })
-    , plate({ 2200.f, 975.f })
+    , plate({ 2200.f, 965.f })
     , victoryZone({ 3850.f, 700.f }, { 100.f, 290.f })
     , onVictory(victoryCallback)
     , onGameOver(gameOverCallback)
@@ -32,10 +32,11 @@ void Scene::update(float dt)
     player.update(dt, allSolids, settings);
 
     // Update ennemie
-    enemy.update(dt, player.getPosition(), allSolids);
+    enemy.update(dt, player.getPosition(), allSolids,
+        settings.lightsEnabled, player.getAimAngle());
 
     // Update box
-    box.update(dt, allSolids, player.getBounds(), player.getVelocity());
+    box.update(dt, allSolids, player.getBounds(), player.getVelocity(), plate.getBounds());
 
     // === Collision manuelle joueur <-> box ===
     auto inter = player.getBounds().findIntersection(box.getBounds());
@@ -64,7 +65,17 @@ void Scene::update(float dt)
     }
 
     plate.update(box.getBounds());
+
     door.update(plate.isActivated(), dt);
+
+    static bool doorWasOpen = false;
+    if (door.isOpen() && !doorWasOpen)
+    {
+        enemy.onDoorOpen();
+        doorWasOpen = true;
+    }
+    doorWasOpen = door.isOpen();
+
     background.update(player.getVelocity().x, dt);
 
     if (!victoryTriggered && player.getPosition().y > 1200.f)

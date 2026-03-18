@@ -5,6 +5,7 @@ class Door
 {
 private:
     sf::RectangleShape shape;
+    sf::Sprite sprite;
     bool open = false;
     float currentHeight;
     float targetHeight;

@@ -2,14 +2,18 @@
 #include "Constants.hpp"
 #include "ResourceManager.hpp"
 #include <SFML/Window/Keyboard.hpp>
-
-Player::Player() : sprite(ResourceManager::getInstance().loadTexture("player", "assets/PlayerUp.png"))
+Player::Player()
+    : sprite(ResourceManager::getInstance().loadTexture("player_walk", "assets/Player.png"))
 {
     isGrounded = false;
-    sprite.setPosition({ 100.f, 100.f });
-
-    // Default to aiming right
     lastAimAngle = 0.f;
+
+    walkTexture = ResourceManager::getInstance().loadTexture("player_walk", "assets/Player.png");
+    upTexture = ResourceManager::getInstance().loadTexture("player_up", "assets/PlayerUp.png");
+
+    // Première frame
+    sprite.setTextureRect(sf::IntRect({ 0, 0 }, { 32, 64 }));
+    sprite.setPosition({ 100.f, 100.f });
 }
 
 sf::Vector2f Player::getPosition() const
@@ -89,6 +93,58 @@ void Player::update(float dt, std::vector<Platform>& platforms, const GameSettin
                 velocity.y = 0;
             }
         }
+    }
+
+    // Bloquer à gauche
+    if (sprite.getPosition().x < 100.f)
+        sprite.setPosition({ 100.f, sprite.getPosition().y });
+
+    // Direction
+    if (velocity.x > 0) facingRight = true;
+    if (velocity.x < 0) facingRight = false;
+
+    // Regarder en haut
+    lookingUp = sf::Keyboard::isKeyPressed(settings.moveUp);
+
+    if (lookingUp)
+    {
+        // Sprite unique PlayerUp
+        sprite.setTexture(upTexture);
+        sprite.setTextureRect(sf::IntRect({ 0, 0 }, { 32, 64 }));
+    }
+    else
+    {
+        // Animation marche ou idle
+        sprite.setTexture(walkTexture);
+
+        if (std::abs(velocity.x) > 0.f)
+        {
+            animTimer += dt;
+            if (animTimer >= animFrameTime)
+            {
+                animTimer = 0.f;
+                currentFrame = (currentFrame + 1) % 4;
+            }
+        }
+        else
+        {
+            currentFrame = 0; // idle = première frame
+            animTimer = 0.f;
+        }
+
+        sprite.setTextureRect(sf::IntRect({ currentFrame * 32, 0 }, { 32, 64 }));
+    }
+
+    // Flip selon direction
+    if (facingRight)
+    {
+        sprite.setScale({ 2.f, 2.f });
+        sprite.setOrigin({ 0.f, 0.f });
+    }
+    else
+    {
+        sprite.setScale({ -2.f, 2.f });
+        sprite.setOrigin({ 32.f, 0.f });
     }
 
     if (sprite.getPosition().x < 100.f)

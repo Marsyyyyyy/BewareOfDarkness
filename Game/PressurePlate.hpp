@@ -4,7 +4,9 @@
 class PressurePlate
 {
 private:
-    sf::RectangleShape shape;
+    sf::RectangleShape shape; // collisions
+    sf::Sprite sprite;        // rendu
+    sf::Sprite spriteActivated;
     bool activated = false;
 
 public:
