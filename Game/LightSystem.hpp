@@ -16,6 +16,7 @@ struct Flashlight
     float angle;
     float radius;
     float distance;
+    bool violet = false;
 };
 
 class LightSystem
@@ -33,7 +34,7 @@ public:
 
     void clearLights();
     void addLight(sf::Vector2f pos, float radius);
-    void addFlashlight(sf::Vector2f pos, float angle, float radius, float distance);
+    void addFlashlight(sf::Vector2f pos, float angle, float radius, float distance, bool violet = false);
 
     void render(sf::RenderWindow& window, const GameSettings& settings);
 };

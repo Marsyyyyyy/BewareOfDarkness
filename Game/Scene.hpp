@@ -32,6 +32,8 @@ private:
     GameSettings settings;
     ParallaxBackground background;
 
+    bool violetMode = false;
+
 public:
     Scene(sf::Vector2u windowSize, const GameSettings& settings,
         std::function<void()> victoryCallback,

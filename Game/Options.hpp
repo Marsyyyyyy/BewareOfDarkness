@@ -64,6 +64,7 @@ public:
         m_items.push_back({ "Move Left",         OptionType::KeyBind, &settings.moveLeft,  nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Move Right",        OptionType::KeyBind, &settings.moveRight, nullptr, nullptr, NeonColors::Cyan });
         m_items.push_back({ "Jump",        OptionType::KeyBind, &settings.flashlight, nullptr, nullptr, NeonColors::Cyan });
+        m_items.push_back({ "UV Flashlight", OptionType::KeyBind, &settings.flashlightMode, nullptr, nullptr, NeonColors::Cyan });
 
         m_items.push_back({ "--- AUDIO ---",     OptionType::Label,   nullptr, nullptr, nullptr, NeonColors::Pink });
         m_items.push_back({ "Volume",            OptionType::Slider,  nullptr, &settings.volume,     nullptr, NeonColors::Pink });

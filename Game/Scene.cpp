@@ -15,10 +15,10 @@ Scene::Scene(sf::Vector2u windowSize, const GameSettings& settings,
     , onVictory(victoryCallback)
     , onGameOver(gameOverCallback)
 {
-    platforms.push_back(Platform({ -1000.f, 980.f }, { 1700.f, 100.f })); // sol gauche étendu jusqu'à x=700
-    platforms.push_back(Platform({ 950.f,   980.f }, { 3050.f, 100.f })); // sol droit inchangé
+    platforms.push_back(Platform({ -1000.f, 980.f }, { 1700.f, 100.f })); // sol gauche
+    platforms.push_back(Platform({ 950.f,   980.f }, { 3400.f, 100.f })); // sol droit
     platforms.push_back(Platform({ 1200.f,  880.f }, { 120.f,  100.f })); // mur bas
-    platforms.push_back(Platform({ 3500.f,  700.f }, { 60.f,   380.f })); // mur final
+    platforms.push_back(Platform({ 3300.f,  730.f }, { 60.f,   500.f })); // mur final
 }
 
 void Scene::update(float dt)
@@ -31,9 +31,17 @@ void Scene::update(float dt)
     // Update joueur
     player.update(dt, allSolids, settings);
 
+    // Update Violet
+    violetMode = sf::Keyboard::isKeyPressed(settings.flashlightMode);
+
+    enemy.update(dt, player.getPosition(), allSolids,
+        settings.lightsEnabled && violetMode,
+        player.getAimAngle());
+
     // Update ennemie
     enemy.update(dt, player.getPosition(), allSolids,
-        settings.lightsEnabled, player.getAimAngle());
+        settings.lightsEnabled && violetMode,
+        player.getAimAngle());
 
     // Update box
     box.update(dt, allSolids, player.getBounds(), player.getVelocity(), plate.getBounds());
@@ -106,8 +114,9 @@ void Scene::renderWorld(sf::RenderWindow& window)
     if (settings.lightsEnabled)
     {
         lights.clearLights();
-        lights.addLight(player.getPosition() + sf::Vector2f(0.f, -20.f), 200.f);
-        lights.addFlashlight(player.getPosition() + sf::Vector2f(0.f, -20.f), player.getAimAngle(), 120.f, 500.f);
+        lights.addLight(player.getPosition() + sf::Vector2f(0.f, -20.f), 350.f);
+        lights.addFlashlight(player.getPosition() + sf::Vector2f(0.f, -40.f),
+            player.getAimAngle(), 120.f, 500.f, violetMode);
         lights.render(window, settings);
     }
 }

@@ -13,6 +13,7 @@ struct GameSettings
     sf::Keyboard::Key moveLeft = sf::Keyboard::Key::Q;
     sf::Keyboard::Key moveRight = sf::Keyboard::Key::D;
     sf::Keyboard::Key flashlight = sf::Keyboard::Key::Space;
+    sf::Keyboard::Key flashlightMode = sf::Keyboard::Key::E;
 
     // -- Audio --
     int volume = 80;       // 0 - 100

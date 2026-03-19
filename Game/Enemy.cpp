@@ -44,15 +44,16 @@ void Enemy::onDoorOpen()
 
 bool Enemy::isInFlashlight(sf::Vector2f playerPos, float angleDeg) const
 {
+    sf::Vector2f flashlightPos = playerPos + sf::Vector2f(0.f, -40.f);
     sf::Vector2f enemyCenter = sprite.getPosition() + sf::Vector2f(254.f, 106.f);
     sf::Vector2f toEnemy = enemyCenter - playerPos;
     float dist = std::sqrt(toEnemy.x * toEnemy.x + toEnemy.y * toEnemy.y);
 
-    if (dist > 500.f) return false; // hors portée
+    if (dist > 1500.f) return false;
 
     float angleRad = angleDeg * 3.14159265f / 180.f;
     float enemyAngle = std::atan2(toEnemy.y, toEnemy.x);
-    float angleSweep = std::atan2(120.f, 500.f);
+    float angleSweep = std::atan2(120.f, 500.f) * 3.f;
 
     float diff = std::abs(enemyAngle - angleRad);
     if (diff > 3.14159265f) diff = 2.f * 3.14159265f - diff;
@@ -62,11 +63,12 @@ bool Enemy::isInFlashlight(sf::Vector2f playerPos, float angleDeg) const
 
 bool Enemy::isInFlashlightUp(sf::Vector2f playerPos, float angleDeg) const
 {
+    sf::Vector2f flashlightPos = playerPos + sf::Vector2f(0.f, -40.f);
     sf::Vector2f enemyCenter = spriteUp.getPosition() + sf::Vector2f(150.f, 150.f);
     sf::Vector2f toEnemy = enemyCenter - playerPos;
     float dist = std::sqrt(toEnemy.x * toEnemy.x + toEnemy.y * toEnemy.y);
 
-    if (dist > 600.f) return false; // hors portée
+    if (dist > 1500.f) return false; // hors portée
 
     // Calculer l'angle réel vers l'ennemi
     float enemyAngleDeg = std::atan2(toEnemy.y, toEnemy.x) * 180.f / 3.14159265f;
@@ -78,7 +80,7 @@ bool Enemy::isInFlashlightUp(sf::Vector2f playerPos, float angleDeg) const
     while (diff < -180.f) diff += 360.f;
 
     float coneHalfAngle = 40.f; // demi-angle du cône en degrés
-    return std::abs(diff) < coneHalfAngle;
+    return std::abs(diff) < 60.f;
 }
 
 void Enemy::update(float dt, sf::Vector2f playerPos, std::vector<Platform>& platforms,
@@ -113,11 +115,11 @@ void Enemy::update(float dt, sf::Vector2f playerPos, std::vector<Platform>& plat
 
         // Recul si éclairé
         if (lightsEnabled && isInFlashlight(playerPos, flashlightAngle))
-            velocity.x = -600.f; // recul rapide
+            velocity.x = -1200.f; // recul rapide
         else
             velocity.x = stalkSpeed;
 
-        if (pos.x + 508.f > playerPos.x - 20.f && !isInFlashlight(playerPos, flashlightAngle))
+        if (pos.x + 508.f > playerPos.x - 70.f && !isInFlashlight(playerPos, flashlightAngle))
         {
             state = EnemyState::Attacking;
             std::cout << ">>> ATTAQUE <<<\n";
